@@ -1,11 +1,11 @@
 from tkinter import Tk
-from typing import Type
 
-from localization.localization import LocalizationP
+from localization.localization import get_locales
 from windows.main_window.window import window
 
 
-def start(localization: type[LocalizationP]):
+def start():
     """Запустит главное окно приложения."""
     root = Tk()
+    localization = get_locales()
     window(root, localization)

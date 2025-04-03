@@ -1,14 +1,16 @@
+from tkinter import Tk
 from tkinter.constants import SUNKEN
 from tkinter.ttk import Button, Entry, Label
 
+from localization.localization import LocalizationP
 from windows.constants import Length as lng
 from windows.setting_window.setting_window import open_setting_window
 
 
-def window(root, localization):
-
+def window(root: Tk, localization: type[LocalizationP]):
+    """Отобразит главное окно."""
     root.title(localization.title)
-    root.geometry('{}x{}'.format(
+    root.geometry(lng.size_window.format(
         lng.gap*3+lng.entry_width+lng.widget_width,
         lng.gap*4+lng.widget_height*3,
     ))
@@ -77,7 +79,7 @@ def window(root, localization):
 
     button_setting = Button(
         text=localization.button_setting,
-        command=lambda: open_setting_window(localization),
+        command=lambda: open_setting_window(root, localization),
     )
     button_setting.place(
         x=lng.gap*2+lng.entry_width,

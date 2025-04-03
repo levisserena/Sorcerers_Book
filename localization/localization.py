@@ -3,8 +3,7 @@ from typing import Protocol, Type
 from dataclasses import dataclass
 from gettext import translation
 
-from database.localization import get_localization
-from database.constant import DefaultSetting
+from database.crud import crud_setting
 
 
 class LocalizationP(Protocol):
@@ -18,13 +17,15 @@ class LocalizationP(Protocol):
     button_create: str
     button_updata: str
     button_all_note: str
+    text_label_localization: str
+    text_label_password: str
 
 
-def get_locales(name_db: str, setting: Type[DefaultSetting]) -> type[LocalizationP]:
+def get_locales() -> type[LocalizationP]:
 
-    loc = get_localization(name_db, setting)
+    languages = crud_setting.get_localization()
 
-    locales = translation('loc', localedir='locales', languages=[loc])
+    locales = translation('loc', localedir='locales', languages=[languages])
     locales.install()
     _ = locales.gettext
 
@@ -40,5 +41,7 @@ def get_locales(name_db: str, setting: Type[DefaultSetting]) -> type[Localizatio
         button_create: str = _('Создать запись')
         button_updata: str = _('Изменить')
         button_all_note: str = _('Посмотреть всё')
+        text_label_localization: str = _('Выберете язык приложения:')
+        text_label_password: str = _('Настройки генератора пароля:')
 
     return Localization

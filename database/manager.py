@@ -5,7 +5,12 @@ class Connector:
     """Контекстный менеджер подключения к базе данных."""
 
     def __init__(self, name_db: str):
-        """name_db - это имя файла с БД."""
+        """
+        Контекстный менеджер подключения к базе данных.
+
+        Параметры:
+            name_db имя файла с БД.
+        """
         self.name_db: str = name_db
 
     def __enter__(self):
@@ -13,5 +18,7 @@ class Connector:
         return self.connection.cursor()
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.connection.commit()
-        self.connection.close()
+        try:
+            self.connection.commit()
+        finally:
+            self.connection.close()
