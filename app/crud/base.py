@@ -1,5 +1,4 @@
-from database.constant import DefaultSetting
-from database.manager import Connector
+from app.crud.manager import Connector
 
 
 class CRUDBase:
@@ -9,18 +8,16 @@ class CRUDBase:
         self,
         name_db: str,
         name_table: str,
-        setting: type[DefaultSetting] = DefaultSetting,
-        connector: type[Connector] = Connector,
+        connector: type[Connector],
     ) -> None:
         """
-        ПараметрыЖ
+        Параметры:
             name_db: название Базы данных;
             name_table: название таблицы в БД;
-            setting: класс с настройками приложения.
+            connector: менеджер подключения к БД.
         """
         self.name_db = name_db
         self.name_table = name_table
-        self.setting = setting
         self.connector = connector
 
     def create_db(self):
