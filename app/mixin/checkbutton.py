@@ -1,17 +1,16 @@
-from tkinter import Misc, W, Radiobutton, Variable
-from typing import Any
+from tkinter import Misc, W, Variable
+from tkinter.ttk import Checkbutton
 
 from app.constants.length import Length
 
 
-class RadiobuttonMixin:
-    """Миксин для обработки работы радиокнопки."""
+class CheckbuttonMixin:
+    """Миксин для обработки работы чек-кнопок."""
 
-    def add_radiobutton(
+    def add_checkbutton(
         self,
         master: Misc | None,
         text: str,
-        value: Any,
         variable: Variable,
         row: int,
         column: int,
@@ -20,15 +19,14 @@ class RadiobuttonMixin:
         rowspan: int = 1,
         columnspan: int = 1,
         sticky: str = W,
-    ) -> Radiobutton:
+    ) -> Checkbutton:
         """
-        Добавит в переданный контейнер радиокнопку.
+        Добавит в переданный контейнер чек-кнопку.
 
         Параметры:
         - master: к какому контейнеру будет прикреплен виджет,
-        - text: текст рядом с кнопке,
-        - value: значение, соответствующее кнопке,
-        - variable: переменная, привязанная к кнопке,
+        - text: текст на кнопке,
+        - variable: привязанный к значению объект Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
         - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
@@ -37,13 +35,12 @@ class RadiobuttonMixin:
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.
         """
-        radiobutton = Radiobutton(
+        button = Checkbutton(
             master=master,
             text=text,
-            value=value,
             variable=variable,
         )
-        radiobutton.grid(
+        button.grid(
             row=row,
             column=column,
             padx=padx,
@@ -52,4 +49,4 @@ class RadiobuttonMixin:
             columnspan=columnspan,
             sticky=sticky,
         )
-        return radiobutton
+        return button

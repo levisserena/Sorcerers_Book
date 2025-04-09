@@ -32,7 +32,7 @@ class CRUDConfig(CRUDBase):
         self.field_value = field_value
         self.name_config = name_config
 
-    def create_db(self):
+    def create_db(self) -> None:
         """Создаст таблицу в БД для хранения настроек приложения."""
         with self.connector(self.name_db) as cursor:
             cursor.execute(f"""
@@ -43,16 +43,18 @@ class CRUDConfig(CRUDBase):
             )
             """)
 
-    def create_rows_in_db(self, data: dict[str, Any]):
+    def create_rows_in_db(self, data: dict[str, Any]) -> None:
         """Создаст записи в таблице с БД если их там нет."""
         with self.connector(self.name_db) as cursor:
             for key, value in data.items():
                 if not cursor.execute(
-                    f'SELECT * FROM {self.name_table} WHERE name = ?',
+                    f'SELECT * FROM {self.name_table} WHERE {self.field_name} = ?',
                     (key,),
                 ).fetchall():
-                    cursor.execute(
-                        f'INSERT INTO {self.name_table} (name, value) VALUES (?, ?)',
+                    cursor.execute(f"""
+                        INSERT INTO {self.name_table} (
+                        {self.field_name}, {self.field_value}
+                        ) VALUES (?, ?)""",
                         (key, value),
                     )
 
@@ -70,8 +72,16 @@ class CRUDConfig(CRUDBase):
             cursor.execute(f'SELECT {self.field_name}, {self.field_value} FROM {self.name_table}')
             setting_db = cursor.fetchall()
         result = {name: value for name, value in setting_db}
-        # TODO: валидацию result из базы, мало ли.
         return result
+
+    def update_all(self, data: dict[str, Any]) -> None:
+        with self.connector(self.name_db) as cursor:
+            for name, value in data.items():
+                cursor.execute(
+                    f'UPDATE {self.name_table} SET {self.field_value} = ? '
+                    f'WHERE {self.field_name} = ?',
+                    (value, name),
+                )
 
 
 crud_config = CRUDConfig(
@@ -82,4 +92,3 @@ crud_config = CRUDConfig(
     field_value=ConstantDataBase.value,
     name_config=Config,
 )
-

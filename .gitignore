@@ -1,6 +1,7 @@
 # Эксклюзивно для этого проекта
 developments
 grimoire.db
+nuitka-crash-report.xml
 
 # Кэш mypy
 .mypy_cache

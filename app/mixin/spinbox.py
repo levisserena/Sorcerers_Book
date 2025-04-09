@@ -1,34 +1,36 @@
-from tkinter import Misc, W, Radiobutton, Variable
-from typing import Any
+from tkinter import Misc, W, Variable
+from tkinter.ttk import Spinbox
 
 from app.constants.length import Length
 
 
-class RadiobuttonMixin:
-    """Миксин для обработки работы радиокнопки."""
+class SpinboxMixin():
+    """Миксин для обработки работы спинбокса."""
 
-    def add_radiobutton(
+    def add_spinbox(
         self,
         master: Misc | None,
-        text: str,
-        value: Any,
-        variable: Variable,
+        textvariable: Variable,
+        from_: int,
+        to: int,
         row: int,
         column: int,
+        command=None,
+        increment: int = 1,
+        width: int = 5,
+        state='readonly',
         padx: int = Length.gap,
         pady: int = Length.gap,
         rowspan: int = 1,
         columnspan: int = 1,
         sticky: str = W,
-    ) -> Radiobutton:
+    ) -> Spinbox:
         """
-        Добавит в переданный контейнер радиокнопку.
+        Добавит в переданный контейнер спинбокс.
 
         Параметры:
         - master: к какому контейнеру будет прикреплен виджет,
-        - text: текст рядом с кнопке,
-        - value: значение, соответствующее кнопке,
-        - variable: переменная, привязанная к кнопке,
+        - textvariable: устанавливает привязку к элементу Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
         - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
@@ -37,13 +39,17 @@ class RadiobuttonMixin:
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.
         """
-        radiobutton = Radiobutton(
+        spinbox = Spinbox(
             master=master,
-            text=text,
-            value=value,
-            variable=variable,
+            from_=from_,
+            to=to,
+            increment=increment,
+            width=width,
+            textvariable=textvariable,
+            state=state,
+            command=command,
         )
-        radiobutton.grid(
+        spinbox.grid(
             row=row,
             column=column,
             padx=padx,
@@ -52,4 +58,4 @@ class RadiobuttonMixin:
             columnspan=columnspan,
             sticky=sticky,
         )
-        return radiobutton
+        return spinbox

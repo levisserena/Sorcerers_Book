@@ -9,12 +9,12 @@ class Config:
     """
     Названия конфигураций в приложении.
 
-    localization_app: локализация проекта.
-    capital_letters: "заглавные буквы в пароле".
-    numbers: "цифры в пароле".
-    characters: "символы в пароле".
-    min_length_password: "минимальная длина пароля".
-    max_length_password: "максимальная длина пароля".
+    - localization_app: локализация проекта.
+    - capital_letters: "заглавные буквы в пароле".
+    - numbers: "цифры в пароле".
+    - characters: "символы в пароле".
+    - min_length_password: "минимальная длина пароля".
+    - max_length_password: "максимальная длина пароля".
     """
 
     localization_app: str = 'localization_app'
@@ -31,8 +31,8 @@ class DefaultConfig:
     Набор конфигураций по умолчанию.
 
     Значения, для настроек:
-    default_localization: локализация проекта по умолчанию.
-    default_length_password: длина пароля по умолчанию.
+    - default_localization: локализация проекта по умолчанию.
+    - default_length_password: длина пароля по умолчанию.
     """
 
     default_localization: str = TAG_DEFAULT_LOCALIZATION

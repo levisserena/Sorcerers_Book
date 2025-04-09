@@ -17,16 +17,16 @@ class WindowMixin:
         resizable: bool = False,
     ) -> Tk | Toplevel:
         """
-        Откроет окно с указанными параметрами.
+        Настроит открываемое окно.
 
         Параметры:
-        window: основа для окна, например Tk или Toplevel,
-        title: название окна,
-        geometry: размеры окна,
-        iconbitmap: иконка окна,
-        grab_set: перехватывает ли окно управление при создании,
-        focus_force: сразу ли активно окно при открытие,
-        resizable: можно ли менять размеры окна.
+        - window: основа для окна, например Tk или Toplevel,
+        - title: название окна,
+        - geometry: размеры окна,
+        - iconbitmap: иконка окна,
+        - grab_set: перехватывает ли окно управление при создании,
+        - focus_force: сразу ли активно окно при открытие,
+        - resizable: можно ли менять размеры окна.
 
         Вернет экземпляр этого окна.
         """
@@ -34,7 +34,10 @@ class WindowMixin:
         if geometry is not None:
             window.geometry(geometry)
         if iconbitmap is not None:
-            window.iconbitmap(default=iconbitmap)
+            try:
+                window.iconbitmap(default=iconbitmap)
+            except Exception as error:
+                print(f'Иконка приложения не подгружена: {type(error).__name__}: {error}')
         window.resizable(resizable, resizable)
         if focus_force:
             window.focus_force()
@@ -63,6 +66,16 @@ class WindowMixin:
         minsize_column: int = Length.widget_width,
         weight: int = 0,
     ) -> None:
+        """
+        Приведет колонки и строки сетки окна к единообразию.
+
+        - window: основа для окна, например Tk или Toplevel,
+        - number_row: количество строк,
+        - number_column: количество колонок
+        - minsize_row: минимальная высота строки,
+        - minsize_column: минимальная ширина колонки,
+        - weight: "вес" строки или колонки, отвечает за прирост размера при растягивание окна.
+        """
         for index in range(number_row):
             window.rowconfigure(index=index, minsize=minsize_row, weight=weight)
         for index in range(number_column):

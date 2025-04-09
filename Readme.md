@@ -26,3 +26,30 @@ xgettext -d loc -o loc.pot localization/localization.py --from-code=UTF-8 - ко
 
 ### TODO сделать норм пути
 msgfmt loc.pot -o locales/loc.mo  - для компиляции в mo файл
+
+
+## Компилируем
+Устанавливаем Nuitka в активированном виртуальном окружении.
+```
+pip install nuitka
+```
+Проверяем установку
+```
+python -m nuitka --version
+```
+Запускаем компиляцию
+```
+python -m nuitka --onefile --windows-disable-console --output-dir=dist --output-filename=book.exe --windows-icon-from-ico=static/sb.ico --enable-plugin=tk-inter main.py
+```
+| Флаг                                  | Описание                                                               |
+|---------------------------------------|------------------------------------------------------------------------|
+| --onefile                             | Создать один .exe (без кучи зависимостей в папке).                     |
+| --windows-disable-console             | Скрыть консоль (для GUI-приложений на PyQt/Tkinter).                   |
+| --output-dir=dist                     | Положить .exe в папку dist (удобно для организации).                   |
+| --output-filename=book.exe            | Задать имя выходного файла <br>(book.exe вместо стандартного main.exe).|
+| --enable-plugin=tk-inter              | Если используете Tkinter (нужно для корректной работы).                |
+| --windows-icon-from-ico=static/sb.ico | Установит иконку для файла book.exe                                    |
+
+На все вопросы соглашайтесь - будет скачен компилятор C++ и необходимые файлы.
+
+После завершения компиляции в папку `dist` нужно будет скопировать папку `static` вместе со всем содержимым.

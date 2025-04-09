@@ -1,9 +1,9 @@
-from app.app import SorcerersBool
+from app.app import SorcerersBook
 
 
 def main() -> None:
     """Функция, запускающая всё приложение."""
-    sorcerers_book = SorcerersBool()
+    sorcerers_book = SorcerersBook()
     sorcerers_book.start()
 
 
