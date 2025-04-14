@@ -1,6 +1,7 @@
 from tkinter import Misc, W, Variable
 from tkinter.ttk import Spinbox
 
+from app.constants.constants import FONT_REGULAR
 from app.constants.length import Length
 
 
@@ -48,6 +49,7 @@ class SpinboxMixin():
             textvariable=textvariable,
             state=state,
             command=command,
+            font=FONT_REGULAR,
         )
         spinbox.grid(
             row=row,

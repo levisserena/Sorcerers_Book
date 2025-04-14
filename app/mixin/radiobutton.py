@@ -1,6 +1,7 @@
 from tkinter import Misc, W, Radiobutton, Variable
 from typing import Any
 
+from app.constants.constants import FONT_REGULAR
 from app.constants.length import Length
 
 
@@ -42,6 +43,7 @@ class RadiobuttonMixin:
             text=text,
             value=value,
             variable=variable,
+            font=FONT_REGULAR,
         )
         radiobutton.grid(
             row=row,

@@ -64,6 +64,8 @@ class LocalizationP(Protocol):
     """Ссылка, которая отображается в окне с информацией о проекте."""
     text_for_about_windows_signature: str
     """Подпись, которая отображается в окне с информацией о проекте."""
+    button_config_about_close: str
+    """Кнопка окна c с информацией о проекте. Закрывает окно."""
 
 
 def get_locales() -> type[LocalizationP]:
@@ -112,6 +114,7 @@ def get_locales() -> type[LocalizationP]:
             'Код открытый, можете посмотреть:'
         )
         text_for_about_windows_link: str = 'https://github.com/levisserena/Sorcerers_Book'
-        text_for_about_windows_signature: str = 'C уважением, Акчурин Лев.'
+        text_for_about_windows_signature: str = _('C уважением, Акчурин Лев.')
+        button_config_about_close: str = _('Лев, ты большой молодец!')
 
     return Localization

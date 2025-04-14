@@ -1,8 +1,9 @@
 from tkinter import Tk, CENTER, IntVar, Toplevel, StringVar, NORMAL, ACTIVE, DISABLED, BooleanVar, W, E, END, RIGHT
 from tkinter.constants import  SUNKEN, RAISED, GROOVE, RIDGE
 from tkinter.ttk import Button, Entry, Label, Radiobutton, Frame, Checkbutton, Style
-from tkinter.messagebox import OK, INFO, showinfo
+from tkinter.messagebox import OK, INFO, showerror, showwarning, showinfo
 
+from app.utils.password_generator import generate_password
 from app.constants.constants import ICONBITMAP, FONT_REGULAR, FONT_UNDERLINED
 from app.constants.config import Config, DefaultConfig
 from app.constants.length import Length
@@ -18,6 +19,7 @@ from app.mixin import (
     LabelMixin,
     RadiobuttonMixin,
     SpinboxMixin,
+    TextMixin,
     WindowMixin,
 )
 
@@ -30,6 +32,7 @@ class SorcerersBook(
     LabelMixin,
     RadiobuttonMixin,
     SpinboxMixin,
+    TextMixin,
     WindowMixin,
 ):
     """Описывает работу окон."""
@@ -37,9 +40,11 @@ class SorcerersBook(
     def __init__(self):
         """
         default_config: конфигурация приложения по умолчанию.
+        config_field: название полей в БД
         crud_payload: управление таблицей с полезной нагрузкой.
         crud_config: управление таблицей с конфигурацией приложения.
         root: экземпляр класса из библиотеки tkinter - основа приложения.
+        style: отвечает за стиль приложения.
         """
         self.default_config = DefaultConfig.get_default_config()
         self.config_field = Config
@@ -65,14 +70,21 @@ class SorcerersBook(
         crud_config.create_rows_in_db(self.default_config)
         self.localization = get_locales()
         self.style.configure('.', font=FONT_REGULAR)
-        self.install_everything_variable_for_main_window()
         self.open_main_window()
 
-    def install_everything_variable_for_main_window(self):
+    def install_everything_variable_for_main_window(self) -> None:
         """Установит переменные, которые будут отслеживаться приложением, для главного окна."""
         self.search_by_input = StringVar()
 
-    def install_everything_variable_for_config_window(self):
+    def install_everything_variable_for_create_window(self) -> None:
+        """
+        Установит переменные, которые будут отслеживаться приложением,
+        для окна создания новой записи в БД.
+        """
+        self.slug_field = StringVar()
+        self.password_field = StringVar()
+
+    def install_everything_variable_for_config_window(self) -> None:
         """Установит переменные, которые будут отслеживаться приложением, для окна конфигурации."""
 
         config_db = crud_config.get_all_settings()
@@ -95,8 +107,10 @@ class SorcerersBook(
             value=config_db[self.config_field.max_length_password],
         )
 
-    def open_main_window(self):
+    def open_main_window(self) -> None:
         """Откроет главное окно, описывает его логику работы."""
+        self.install_everything_variable_for_main_window()
+
         window = self.configure_window(
             self.root,
             self.localization.title_window_main,
@@ -128,7 +142,7 @@ class SorcerersBook(
                 'text': self.localization.button_create,
                 'row': 2,
                 'column': 0,
-                'command': lambda: print(self.localization.button_create),
+                'command': lambda: self.open_create_window(window),
             },
             {
                 'text': self.localization.button_updata,
@@ -165,7 +179,110 @@ class SorcerersBook(
             self.add_button(master=window, **button)
         window.mainloop()
 
-    def open_config_window(self, window_master):
+    def open_create_window(self, window_master) -> None:
+        """Откроет окно создания новой записи в БД."""
+        self.install_everything_variable_for_create_window()
+
+        window = Toplevel(window_master)
+        self.configure_window(
+            window=window,
+            title='Создать новую запись',
+            grab_set=True,
+            focus_force=True,
+        )
+        self.set_up_column_and_row_settings(
+            window=window,
+            number_row=7,
+            number_column=4,
+        )
+
+        data_label = (
+            {
+                'text': 'Короткое название (сохранится без пробелов по краям):',
+                'row': 0,
+            },
+            {
+                'text': 'Более подробное описание, чтоб не забыть, про что это вообще:',
+                'row': 2,
+            },
+            {
+                'text': 'Пароль, для указанного артефакта (сохранится без пробелов):',
+                'row': 4,
+            },
+        )
+        for label in data_label:
+            self.add_label(
+                master=window,
+                column=0,
+                columnspan=4,
+                **label,
+            )
+
+        data_entry = (
+            {
+                'textvariable': self.slug_field,
+                'row': 1,
+            },
+            {
+                'textvariable': self.password_field,
+                'row': 5,
+            },
+        )
+        for entry in data_entry:
+            self.add_entry_field(
+                master=window,
+                column=0,
+                columnspan=4,
+                **entry,
+            )
+
+        text_field = self.add_text_field(
+            master=window,
+            row=3,
+            column=0,
+            columnspan=4,
+        )
+
+        def set_value_entry_password():
+            config_db = crud_config.get_all_settings()
+            self.password_field.set(generate_password(
+                min_range_pass=config_db[self.config_field.min_length_password],
+                max_range_pass=config_db[self.config_field.max_length_password],
+                number=int(config_db[self.config_field.numbers]),
+                characters=int(config_db[self.config_field.characters]),
+                capital_letters=int(config_db[self.config_field.capital_letters]),
+            ))
+
+        data_button = (
+            {
+                'text': 'Сгенерировать',
+                'command': lambda: set_value_entry_password(),
+                'column': 0,
+            },
+            {
+                'text': 'Создать',
+                'command': lambda: self.create_entry_in_database(
+                    slug=self.slug_field.get(),
+                    description=text_field.get(),
+                    password=self.password_field.get(),
+                    window=window,
+                ),
+                'column': 2,
+            },
+            {
+                'text': 'Отмена',
+                'command': lambda: self.dismiss(window),
+                'column': 3,
+            },
+        )
+        for button in data_button:
+            self.add_button(
+                master=window,
+                row=6,
+                **button,
+            )
+
+    def open_config_window(self, window_master) -> None:
         """Откроет окно настроек."""
         self.install_everything_variable_for_config_window()
 
@@ -256,7 +373,10 @@ class SorcerersBook(
             )
 
         def update_limits(*args):
-            """Обновляет допустимые диапазоны для обоих Spinbox."""
+            """
+            Обновляет допустимые диапазоны для обоих Spinbox,
+            чтобы минимальная длина пароля не была больше максимальной.
+            """
             try:
                 spinbox_max_length_password.config(from_=int(spinbox_min_length_password.get()))
                 spinbox_min_length_password.config(to=int(spinbox_max_length_password.get()))
@@ -288,27 +408,24 @@ class SorcerersBook(
         data_button = (
             {
                 'text': self.localization.button_config_about,
-                'row': 1,
                 'column': 0,
                 'command': lambda: self.open_about_window(window),
             },
             {
                 'text': self.localization.button_config_apply,
-                'row': 1,
                 'column': 2,
                 'command': lambda: self.save_config(window),
             },
             {
                 'text': self.localization.button_config_cancel,
-                'row': 1,
                 'column': 3,
                 'command': lambda: self.dismiss(window),
             },
         )
         for button in data_button:
-            self.add_button(master=window, **button)
+            self.add_button(master=window, row=1, **button)
 
-    def open_about_window(self, window_master):
+    def open_about_window(self, window_master) -> None:
         """Откроет окно с информацией о проекте."""
         window = Toplevel(window_master)
         self.configure_window(
@@ -342,8 +459,46 @@ class SorcerersBook(
             columnspan=3,
             text=self.localization.text_for_about_windows_link,
         )
+        self.add_button(
+            master=window,
+            text=self.localization.button_config_about_close,
+            command=lambda: self.dismiss(window),
+            row=3,
+            column=2,
+        )
 
-    def save_config(self, window):
+    def create_entry_in_database(
+        self, slug: str, password: str, description: str, window: Toplevel,
+    ) -> None:
+        """
+        Создаст новую запись в базе данных.
+        В конце закроет окно для создания записи в БД.
+
+        - slug: значение для поля slug,
+        - password: значение для поля password,
+        - description: значение для поля description,
+        - window: окно, которое необходимо закрыть по завершению.
+        """
+        if not slug:
+            showerror(title='Исправьте ввод', message='Короткое название не может быть пустым')
+        elif self.crud_payload.get_by_slug_or_none(slug=slug):
+            showerror(
+                title='Исправьте ввод',
+                message='Такое короткое название уже есть в базе данных',
+            )
+        elif not password:
+            showerror(title='Исправьте ввод', message='Пароль не может быть пустым')
+        else:
+            slug_corrected = slug.strip()
+            password_corrected = password.strip().replace(' ', '')
+            self.crud_payload.create_entry(
+                slug=slug_corrected,
+                description=description,
+                password=password_corrected,
+            )
+            self.dismiss(window)
+
+    def save_config(self, window) -> None:
         """
         Обрабатывает работу кнопки "Принять" окна конфигурации.
 

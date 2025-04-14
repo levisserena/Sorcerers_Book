@@ -1,6 +1,7 @@
 from tkinter import Misc, NSEW, Variable
 from tkinter.ttk import Entry
 
+from app.constants.constants import FONT_REGULAR
 from app.constants.length import Length
 
 
@@ -33,7 +34,11 @@ class EntryMixin():
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.
         """
-        entry = Entry(master=master, textvariable=textvariable)
+        entry = Entry(
+            master=master,
+            textvariable=textvariable,
+            font=FONT_REGULAR,
+        )
         entry.grid(
             row=row,
             column=column,

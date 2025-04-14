@@ -20,6 +20,6 @@ class CRUDBase:
         self.name_table = name_table
         self.connector = connector
 
-    def create_db(self):
+    def create_db(self) -> None:
         """Создание таблицы в БД."""
         raise NotImplementedError

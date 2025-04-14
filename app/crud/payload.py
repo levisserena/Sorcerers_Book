@@ -29,17 +29,52 @@ class CRUDPayload(CRUDBase):
         self.field_description = field_description
         self.field_password = field_password
 
-    def create_db(self):
+    def create_db(self) -> None:
         """Создаст таблицу в БД для хранения настроек приложения."""
         with self.connector(self.name_db) as cursor:
             cursor.execute(f"""
             CREATE TABLE IF NOT EXISTS {self.name_table} (
             id INTEGER PRIMARY KEY,
-            {self.field_slug} TEXT NOT NULL,
+            {self.field_slug} TEXT NOT NULL UNIQUE,
             {self.field_description} TEXT,
             {self.field_password} TEXT NOT NULL
             )
             """)
+
+    def create_entry(self, slug: str, password: str, description: str = '') -> None:
+        """
+        Создаст новую запись в БД.
+
+        - slug: значение для поля slug,
+        - password: значение для поля password,
+        - description: значение для поля description.
+        """
+        with self.connector(self.name_db) as cursor:
+            cursor.execute(f"""
+                INSERT INTO {self.name_table} (
+                {self.field_slug}, {self.field_description}, {self.field_password}
+                ) VALUES (?, ?, ?)""",
+                (slug, description, password),
+            )
+
+    def get_by_slug_or_none(self, slug: str) -> dict[str, str] | None:
+        """
+        Получит данные из БД по slug и вернет их в виде словаря.
+
+        - slug: значение поля slug, по которому будет происходить поиск.
+        """
+        with self.connector(self.name_db) as cursor:
+            pre_result = cursor.execute(f"""
+                SELECT {self.field_slug}, {self.field_description}, {self.field_password}
+                FROM {self.name_table} WHERE {self.field_slug} = ?
+                """,
+                (slug,),
+            ).fetchone()
+            result = None if not pre_result else dict(zip(
+                (self.field_slug, self.field_description, self.field_password),
+                pre_result,
+            ))
+            return result
 
 
 crud_payload = CRUDPayload(
