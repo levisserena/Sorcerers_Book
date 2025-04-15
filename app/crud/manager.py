@@ -18,7 +18,11 @@ class Connector:
         return self.connection.cursor()
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
+        if exc_type is not None:
+            self.connection.rollback()
         try:
             self.connection.commit()
+        except Exception:
+            self.connection.rollback()
         finally:
             self.connection.close()

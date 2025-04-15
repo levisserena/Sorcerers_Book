@@ -1,4 +1,4 @@
-from tkinter import Misc, W, Radiobutton, Variable
+from tkinter import Radiobutton, Tk , Toplevel, Variable, W
 from typing import Any
 
 from app.constants.constants import FONT_REGULAR
@@ -10,7 +10,7 @@ class RadiobuttonMixin:
 
     def add_radiobutton(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         text: str,
         value: Any,
         variable: Variable,

@@ -50,10 +50,12 @@ class CRUDPayload(CRUDBase):
         - description: значение для поля description.
         """
         with self.connector(self.name_db) as cursor:
-            cursor.execute(f"""
-                INSERT INTO {self.name_table} (
-                {self.field_slug}, {self.field_description}, {self.field_password}
-                ) VALUES (?, ?, ?)""",
+            cursor.execute(
+                f"""
+                INSERT INTO {self.name_table}
+                ({self.field_slug}, {self.field_description}, {self.field_password})
+                VALUES (?, ?, ?)
+                """,
                 (slug, description, password),
             )
 
@@ -64,17 +66,38 @@ class CRUDPayload(CRUDBase):
         - slug: значение поля slug, по которому будет происходить поиск.
         """
         with self.connector(self.name_db) as cursor:
-            pre_result = cursor.execute(f"""
-                SELECT {self.field_slug}, {self.field_description}, {self.field_password}
-                FROM {self.name_table} WHERE {self.field_slug} = ?
+            pre_result = cursor.execute(
+                f"""
+                SELECT id, {self.field_slug}, {self.field_description}, {self.field_password}
+                FROM {self.name_table}
+                WHERE {self.field_slug} = ?
                 """,
                 (slug,),
             ).fetchone()
             result = None if not pre_result else dict(zip(
-                (self.field_slug, self.field_description, self.field_password),
+                ('id', self.field_slug, self.field_description, self.field_password),
                 pre_result,
             ))
             return result
+
+    def update_entry(self, id: str, slug: str, password: str, description: str = '') -> None:
+        """
+        Изменит запись в БД.
+
+        - id: идентификационный номер записи,
+        - slug: значение для поля slug,
+        - password: значение для поля password,
+        - description: значение для поля description.
+        """
+        with self.connector(self.name_db) as cursor:
+            cursor.execute(
+                f"""
+                UPDATE {self.name_table}
+                SET {self.field_slug} = ?, {self.field_description} = ?, {self.field_password} = ?
+                WHERE id = ?
+                """,
+                (slug, description, password, id)
+            )
 
 
 crud_payload = CRUDPayload(

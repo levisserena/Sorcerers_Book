@@ -1,4 +1,4 @@
-from tkinter import Misc, W, Variable
+from tkinter import Tk, Toplevel, Variable, W
 from tkinter.ttk import Checkbutton
 
 from app.constants.length import Length
@@ -9,7 +9,7 @@ class CheckbuttonMixin:
 
     def add_checkbutton(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         text: str,
         variable: Variable,
         row: int,

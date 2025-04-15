@@ -1,5 +1,5 @@
 import webbrowser
-from tkinter import LEFT, Misc, NSEW, Variable
+from tkinter import LEFT, NSEW, Tk, Toplevel, Variable
 from tkinter.constants import FLAT
 from tkinter.ttk import Label
 from typing import Literal
@@ -13,7 +13,7 @@ class LabelMixin:
 
     def add_label(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         row: int,
         column: int,
         text: float | str = '',
@@ -66,7 +66,7 @@ class LabelMixin:
 
     def add_link(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         row: int,
         column: int,
         text: float | str = '',

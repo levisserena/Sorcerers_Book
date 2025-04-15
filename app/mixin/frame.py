@@ -1,4 +1,4 @@
-from tkinter import Misc, NSEW
+from tkinter import NSEW, Tk, Toplevel
 from tkinter.ttk import Frame
 from tkinter.constants import GROOVE
 from typing import Literal
@@ -11,7 +11,7 @@ class FrameMixin:
 
     def add_frame(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         row: int,
         column: int,
         padding: int = 0,

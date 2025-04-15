@@ -1,4 +1,4 @@
-from tkinter import Misc, W, Variable
+from tkinter import Tk, Toplevel, Variable, W
 from tkinter.ttk import Spinbox
 
 from app.constants.constants import FONT_REGULAR
@@ -10,7 +10,7 @@ class SpinboxMixin():
 
     def add_spinbox(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         textvariable: Variable,
         from_: int,
         to: int,

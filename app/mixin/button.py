@@ -1,4 +1,4 @@
-from tkinter import Misc, NSEW
+from tkinter import NSEW, Tk, Toplevel
 from tkinter.ttk import Button
 from typing import Any, Callable
 
@@ -10,7 +10,7 @@ class ButtonMixin:
 
     def add_button(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         text: str,
         command: str | Callable[[], Any],
         row: int,

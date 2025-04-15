@@ -1,4 +1,4 @@
-from tkinter import END, Misc, NSEW, WORD
+from tkinter import END, NSEW, Tk, Toplevel, WORD
 from tkinter.scrolledtext import ScrolledText
 from typing import Literal, Protocol
 
@@ -27,7 +27,7 @@ class TextMixin():
 
     def add_text_field(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         row: int,
         column: int,
         wrap: Literal['word', 'char', 'none'] = WORD,

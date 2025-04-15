@@ -1,4 +1,4 @@
-from tkinter import Misc, NSEW, Variable
+from tkinter import NSEW, Tk, Toplevel, Variable
 from tkinter.ttk import Entry
 
 from app.constants.constants import FONT_REGULAR
@@ -10,7 +10,7 @@ class EntryMixin():
 
     def add_entry_field(
         self,
-        master: Misc | None,
+        master: Tk | Toplevel | None,
         textvariable: Variable,
         row: int,
         column: int,
