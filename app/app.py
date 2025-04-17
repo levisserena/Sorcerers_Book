@@ -715,13 +715,20 @@ class SorcerersBook(
         Найдет пароль в базе данных по слагу и выведет его на главном окне.
         """
         data_db = self.crud_payload.get_by_slug_or_none(
-            self.search_by_input.get()
+            slug=self.search_by_input.get(),
+            like=True,
         )
-        self.password_by_output.set(
-            'Ничего не найдено'
-            if data_db is None
-            else data_db[self.db_field.password]
-        )
+        if data_db is None:
+            self.password_by_output.set(
+                'Ничего не найдено'
+            )
+        else:
+            self.password_by_output.set(
+                data_db[self.db_field.password]
+            )
+            self.search_by_input.set(
+                data_db[self.db_field.slug]
+            )
 
     def save_config(self, window: Tk | Toplevel) -> None:
         """

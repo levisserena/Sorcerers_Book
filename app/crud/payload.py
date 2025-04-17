@@ -67,24 +67,37 @@ class CRUDPayload(CRUDBase):
                 (slug, description, password),
             )
 
-    def get_by_slug_or_none(self, slug: str) -> dict[str, str] | None:
+    def get_by_slug_or_none(
+        self,
+        slug: str,
+        like: bool = False,
+    ) -> dict[str, str] | None:
         """
         Получит данные из БД по slug и вернет их в виде словаря.
 
-        - slug: значение поля slug, по которому будет происходить поиск.
+        - slug: значение поля slug, по которому будет происходить поиск,
+        - like: если True, то будет искать по началу слова, в противном
+          случае слово целиком.
         """
         with self.connector(self.name_db) as cursor:
-            pre_result = cursor.execute(
-                f"""
-                SELECT id,
-                {self.field_slug},
-                {self.field_description},
-                {self.field_password}
+            path_request = f"""
+                SELECT
+                    id,
+                    {self.field_slug},
+                    {self.field_description},
+                    {self.field_password}
                 FROM {self.name_table}
-                WHERE {self.field_slug} = ?
-                """,
+                WHERE {self.field_slug}
+                """
+            pre_result = cursor.execute(
+                path_request + ' = ?',
                 (slug,),
             ).fetchone()
+            if like and not pre_result:
+                pre_result = cursor.execute(
+                    path_request + " LIKE ? || '%'",
+                    (slug,),
+                ).fetchone()
             result = None if not pre_result else dict(zip(
                 (
                     'id',
@@ -115,9 +128,10 @@ class CRUDPayload(CRUDBase):
             cursor.execute(
                 f"""
                 UPDATE {self.name_table}
-                SET {self.field_slug} = ?,
-                {self.field_description} = ?,
-                {self.field_password} = ?
+                SET
+                    {self.field_slug} = ?,
+                    {self.field_description} = ?,
+                    {self.field_password} = ?
                 WHERE id = ?
                 """,
                 (slug, description, password, id)
