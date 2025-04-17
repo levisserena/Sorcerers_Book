@@ -1,5 +1,6 @@
-from tkinter import NSEW, Tk, Toplevel
-from tkinter.ttk import Button
+from tkinter import Tk, Toplevel
+from tkinter.constants import NSEW
+from tkinter.ttk import Button, Frame
 from typing import Any, Callable
 
 from app.constants.length import Length
@@ -10,7 +11,7 @@ class ButtonMixin:
 
     def add_button(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         text: str,
         command: str | Callable[[], Any],
         row: int,
@@ -30,8 +31,10 @@ class ButtonMixin:
         - command: активируемая кнопкой команда,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.

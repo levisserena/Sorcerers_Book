@@ -1,4 +1,6 @@
-from tkinter import Radiobutton, Tk , Toplevel, Variable, W
+from tkinter import Radiobutton, Tk, Toplevel, Variable
+from tkinter.constants import W
+from tkinter.ttk import Frame
 from typing import Any
 
 from app.constants.constants import FONT_REGULAR
@@ -10,7 +12,7 @@ class RadiobuttonMixin:
 
     def add_radiobutton(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         text: str,
         value: Any,
         variable: Variable,
@@ -32,8 +34,10 @@ class RadiobuttonMixin:
         - variable: переменная, привязанная к кнопке,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.

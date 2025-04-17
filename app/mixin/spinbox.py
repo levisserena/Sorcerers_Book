@@ -1,5 +1,6 @@
-from tkinter import Tk, Toplevel, Variable, W
-from tkinter.ttk import Spinbox
+from tkinter import Tk, Toplevel, Variable
+from tkinter.constants import W
+from tkinter.ttk import Frame, Spinbox
 
 from app.constants.constants import FONT_REGULAR
 from app.constants.length import Length
@@ -10,7 +11,7 @@ class SpinboxMixin():
 
     def add_spinbox(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         textvariable: Variable,
         from_: int,
         to: int,
@@ -34,8 +35,10 @@ class SpinboxMixin():
         - textvariable: устанавливает привязку к элементу Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.

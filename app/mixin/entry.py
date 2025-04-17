@@ -1,5 +1,6 @@
-from tkinter import NSEW, Tk, Toplevel, Variable
-from tkinter.ttk import Entry
+from tkinter import Tk, Toplevel, Variable
+from tkinter.constants import NSEW
+from tkinter.ttk import Entry, Frame
 
 from app.constants.constants import FONT_REGULAR
 from app.constants.length import Length
@@ -10,7 +11,7 @@ class EntryMixin():
 
     def add_entry_field(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         textvariable: Variable,
         row: int,
         column: int,
@@ -28,8 +29,10 @@ class EntryMixin():
         - textvariable: устанавливает привязку к элементу Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.

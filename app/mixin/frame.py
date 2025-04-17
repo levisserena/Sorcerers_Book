@@ -1,6 +1,6 @@
-from tkinter import NSEW, Tk, Toplevel
+from tkinter import Tk, Toplevel
+from tkinter.constants import GROOVE, NSEW
 from tkinter.ttk import Frame
-from tkinter.constants import GROOVE
 from typing import Literal
 
 from app.constants.length import Length
@@ -11,7 +11,7 @@ class FrameMixin:
 
     def add_frame(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         row: int,
         column: int,
         padding: int = 0,
@@ -20,7 +20,9 @@ class FrameMixin:
         rowspan: int = 1,
         columnspan: int = 1,
         borderwidth: int = 0,
-        relief: Literal['raised', 'sunken', 'flat', 'ridge', 'solid', 'groove'] = GROOVE,
+        relief: Literal[
+            'raised', 'sunken', 'flat', 'ridge', 'solid', 'groove'
+        ] = GROOVE,
         sticky: str = NSEW,
     ) -> Frame:
         """
@@ -32,8 +34,10 @@ class FrameMixin:
         - textvariable: устанавливает привязку к элементу Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - borderwidth: ширина линии контура,

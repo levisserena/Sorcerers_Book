@@ -1,7 +1,7 @@
 import webbrowser
-from tkinter import LEFT, NSEW, Tk, Toplevel, Variable
-from tkinter.constants import FLAT
-from tkinter.ttk import Label
+from tkinter import Tk, Toplevel, Variable
+from tkinter.constants import FLAT, LEFT, NSEW
+from tkinter.ttk import Frame, Label
 from typing import Literal
 
 from app.constants.constants import FONT_REGULAR, FONT_UNDERLINED
@@ -13,7 +13,7 @@ class LabelMixin:
 
     def add_label(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         row: int,
         column: int,
         text: float | str = '',
@@ -23,7 +23,9 @@ class LabelMixin:
         rowspan: int = 1,
         columnspan: int = 1,
         borderwidth: int = 0,
-        relief: Literal['raised', 'sunken', 'flat', 'ridge', 'solid', 'groove'] = FLAT,
+        relief: Literal[
+            'raised', 'sunken', 'flat', 'ridge', 'solid', 'groove'
+        ] = FLAT,
         sticky: str = NSEW,
         justify: Literal['left', 'center', 'right'] = LEFT,
     ) -> Label:
@@ -36,8 +38,10 @@ class LabelMixin:
         - textvariable: устанавливает привязку к элементу Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - borderwidth: ширина линии контура,
@@ -66,7 +70,7 @@ class LabelMixin:
 
     def add_link(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         row: int,
         column: int,
         text: float | str = '',
@@ -76,7 +80,9 @@ class LabelMixin:
         rowspan: int = 1,
         columnspan: int = 1,
         borderwidth: int = 0,
-        relief: Literal['raised', 'sunken', 'flat', 'ridge', 'solid', 'groove'] = FLAT,
+        relief: Literal[
+            'raised', 'sunken', 'flat', 'ridge', 'solid', 'groove'
+        ] = FLAT,
         sticky: str = NSEW,
         justify: Literal['left', 'center', 'right'] = LEFT,
     ) -> Label:
@@ -89,8 +95,10 @@ class LabelMixin:
         - textvariable: устанавливает привязку к элементу Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - borderwidth: ширина линии контура,

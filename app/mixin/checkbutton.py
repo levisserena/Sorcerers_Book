@@ -1,5 +1,6 @@
-from tkinter import Tk, Toplevel, Variable, W
-from tkinter.ttk import Checkbutton
+from tkinter import Tk, Toplevel, Variable
+from tkinter.constants import W
+from tkinter.ttk import Checkbutton, Frame
 
 from app.constants.length import Length
 
@@ -9,7 +10,7 @@ class CheckbuttonMixin:
 
     def add_checkbutton(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         text: str,
         variable: Variable,
         row: int,
@@ -29,8 +30,10 @@ class CheckbuttonMixin:
         - variable: привязанный к значению объект Variable,
         - row: номер строки, отсчет начинается с нуля,
         - column: номер столбца, отсчет начинается с нуля,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.

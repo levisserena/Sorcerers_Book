@@ -1,12 +1,12 @@
-from re import match
 from random import choice, randint
+from re import match
 
 from app.constants.constants import (
     CAPITAL_LETTERS,
     CHARACTERS,
     CHARACTERS_RAW,
     LOWERCASE_LETTERS,
-    NUMBER
+    NUMBER,
 )
 
 
@@ -20,7 +20,7 @@ def generate_password(
     """Генератор паролей.
 
     Параметры:
-    - min_range_pass: 
+    - min_range_pass:
     - max_range_pass:
     - number:
     - capital_letters:
@@ -37,7 +37,8 @@ def generate_password(
 
     def get_pattern():
         r"""
-        Вернет паттерн, для проверки присутствия хотя бы одного символа из набора.
+        Вернет паттерн, для проверки присутствия хотя бы одного символа из
+        набора.
 
         Пример:
         `^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$`

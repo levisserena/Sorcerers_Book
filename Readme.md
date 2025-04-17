@@ -20,6 +20,7 @@
 - Возможность в настройках менять масштаб приложения.
 - Хранение паролей в БД в зашифрованном виде. Продумать стратегию шифрования и дешифрования.
 - Локализовать приложение на английский язык.
+- Предусмотреть логирование в txt файл. Нужно для скомпилированного приложения.
 - Подготовить документацию (Этот Readme.md)
 
 ## Локализация проекта <a name="localization"></a> 
@@ -43,16 +44,16 @@ python -m nuitka --version
 ```
 Запускаем компиляцию
 ```
-python -m nuitka --onefile --windows-disable-console --output-dir=dist --output-filename=book.exe --windows-icon-from-ico=static/sb.ico --enable-plugin=tk-inter main.py
+python -m nuitka --onefile --windows-disable-console --output-dir=sorcerers-book --output-filename=book.exe --windows-icon-from-ico=static/sb.ico --enable-plugin=tk-inter main.py
 ```
 | Флаг                                  | Описание                                                               |
 |---------------------------------------|------------------------------------------------------------------------|
-| --onefile                             | Создать один .exe (без кучи зависимостей в папке).                     |
-| --windows-disable-console             | Скрыть консоль (для GUI-приложений на PyQt/Tkinter).                   |
-| --output-dir=dist                     | Положить .exe в папку dist (удобно для организации).                   |
+| --onefile                             | Создать один .exe (уменьшит количество зависимостей).                  |
+| --windows-disable-console             | Скрыть консоль при запуске GUI-приложений на Tkinter.                  |
+| --output-dir=sorcerers-book           | Создаст папку sorcerers-book, куда сложит все файлы                    |
 | --output-filename=book.exe            | Задать имя выходного файла <br>(book.exe вместо стандартного main.exe).|
-| --enable-plugin=tk-inter              | Если используете Tkinter (нужно для корректной работы).                |
-| --windows-icon-from-ico=static/sb.ico | Установит иконку для файла book.exe                                    |
+| --enable-plugin=tk-inter              | Нужно для корректной работы Tkinter.                                   |
+| --windows-icon-from-ico=static/sb.ico | Установит иконку для файла .exe.                                       |
 
 На все вопросы соглашайтесь - будет скачен компилятор C++ и необходимые файлы.
 

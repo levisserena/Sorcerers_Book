@@ -1,5 +1,7 @@
-from tkinter import END, NSEW, Tk, Toplevel, WORD
+from tkinter import Tk, Toplevel
+from tkinter.constants import END, NSEW, WORD
 from tkinter.scrolledtext import ScrolledText
+from tkinter.ttk import Frame
 from typing import Literal, Protocol
 
 from app.constants.constants import FONT_REGULAR
@@ -27,7 +29,7 @@ class TextMixin():
 
     def add_text_field(
         self,
-        master: Tk | Toplevel | None,
+        master: Frame | Tk | Toplevel | None,
         row: int,
         column: int,
         wrap: Literal['word', 'char', 'none'] = WORD,
@@ -49,8 +51,10 @@ class TextMixin():
         - wrap: переносы,
         - width: ширина поля для ввода в символах,
         - height: высота поля для ввода в строках,
-        - padx: отступы по горизонтали соответственно от границ ячейки грида до границ элемента,
-        - pady: отступы по вертикали соответственно от границ ячейки грида до границ элемента,
+        - padx: отступы по горизонтали соответственно от границ ячейки грида
+          до границ элемента,
+        - pady: отступы по вертикали соответственно от границ ячейки грида
+          до границ элемента,
         - rowspan: сколько строк должен занимать элемент,
         - columnspan: сколько столбцов должен занимать элемент,
         - sticky: выравнивание элемента в ячейке, если ячейка больше элемента.

@@ -9,11 +9,10 @@ LOCALIZATION_OPTIONS: tuple[tuple[str, str], ...] = (
     (TAG_DEFAULT_LOCALIZATION, 'Русский'),
     ('eng', 'English'),
 )
-"""
-Кортеж с настройками локализации:
+"""Кортеж с настройками локализации:
 
-    - названия файла и значения в бд,
-    - названия языка в меню настройки приложения.
+- названия файла и значения в бд,
+- названия языка в меню настройки приложения.
 """
 
 
@@ -43,15 +42,23 @@ class LocalizationP(Protocol):
     text_label_password: str
     """Надпись в окне конфигурации. Настройка генерации пароля в приложении."""
     label_min_length_password: str
-    """Надпись возле спинбокса конфигурации. Минимальная длина генерируемого пароля."""
+    """Надпись возле спинбокса конфигурации. Минимальная длина генерируемого
+    пароля.
+    """
     label_max_length_password: str
-    """Надпись возле спинбокса конфигурации. Максимальная длина генерируемого пароля."""
+    """Надпись возле спинбокса конфигурации. Максимальная длина генерируемого
+    пароля.
+    """
     checkbutton_capital_letters: str
-    """Кнопка окна конфигурации. Использование заглавных букв в генерируемом пароле."""
+    """Кнопка окна конфигурации. Использование заглавных букв в генерируемом
+    пароле.
+    """
     checkbutton_numbers: str
     """Кнопка окна конфигурации. Использование цифр в генерируемом пароле."""
     checkbutton_characters: str
-    """Кнопка окна конфигурации. Использование спец символов в генерируемом пароле."""
+    """Кнопка окна конфигурации. Использование спец символов в генерируемом
+    пароле.
+    """
     button_config_about: str
     """Кнопка окна конфигурации. Открытие окна с информацией о приложении."""
     button_config_apply: str
@@ -77,7 +84,9 @@ def get_locales() -> type[LocalizationP]:
     languages = str(crud_config.get_localization())
 
     try:
-        locales = translation('loc', localedir='locales', languages=[languages])
+        locales = translation(
+            'loc', localedir='locales', languages=[languages]
+        )
         locales.install()
         _ = locales.gettext
     except FileNotFoundError:
@@ -102,18 +111,23 @@ def get_locales() -> type[LocalizationP]:
         text_label_password: str = _('Конфигурация генератора пароля:')
         label_min_length_password: str = _('Минимальная длина пароля')
         label_max_length_password: str = _('Максимальная длина пароля')
-        checkbutton_capital_letters: str = _('Использовать заглавные латинские буквы')
+        checkbutton_capital_letters: str = _(
+            'Использовать заглавные латинские буквы'
+        )
         checkbutton_numbers: str = _('Использовать цифры')
         checkbutton_characters: str = _('Использовать спецсимволы')
         button_config_about: str = _('О проекте')
         button_config_apply: str = _('Применить')
         button_config_cancel: str = _('Отменить')
         text_for_about_windows: str = _(
-            'Sorcerers Book: небольшое приложение, для хранения паролей от всего и вся.\n'
+            'Sorcerers Book: небольшое приложение, для хранения паролей от '
+            'всего и вся.\n'
             'Как записная книжка. Писал для себя любимого.\n'
             'Код открытый, можете посмотреть:'
         )
-        text_for_about_windows_link: str = 'https://github.com/levisserena/Sorcerers_Book'
+        text_for_about_windows_link: str = (
+            'https://github.com/levisserena/Sorcerers_Book'
+        )
         text_for_about_windows_signature: str = _('C уважением, Акчурин Лев.')
         button_config_about_close: str = _('Лев, ты большой молодец!')
 

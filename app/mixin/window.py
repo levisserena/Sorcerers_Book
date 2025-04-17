@@ -37,16 +37,22 @@ class WindowMixin:
             try:
                 window.iconbitmap(default=iconbitmap)
             except Exception as error:
-                print(f'Иконка приложения не подгружена: {type(error).__name__}: {error}')
+                # TODO: Убрать в логирование
+                print(
+                    'Иконка приложения не подгружена: '
+                    f'{type(error).__name__}: {error}'
+                )
         window.resizable(resizable, resizable)
         if focus_force:
             window.focus_force()
         if grab_set:
             window.grab_set()
             window.protocol(
-                'WM_DELETE_WINDOW',  # перехватываем нажатие на крестик
+                'WM_DELETE_WINDOW',  # перехватывает нажатие на крестик
                 lambda: self.dismiss(window),
             )
+        if type(window) is Toplevel:
+            window.bind('<Escape>', lambda _: self.dismiss(window))
         return window
 
     def dismiss(self, window: Tk | Toplevel):
@@ -74,9 +80,14 @@ class WindowMixin:
         - number_column: количество колонок
         - minsize_row: минимальная высота строки,
         - minsize_column: минимальная ширина колонки,
-        - weight: "вес" строки или колонки, отвечает за прирост размера при растягивание окна.
+        - weight: "вес" строки или колонки, отвечает за прирост размера при
+          растягивание окна.
         """
         for index in range(number_row):
-            window.rowconfigure(index=index, minsize=minsize_row, weight=weight)
+            window.rowconfigure(
+                index=index, minsize=minsize_row, weight=weight,
+            )
         for index in range(number_column):
-            window.columnconfigure(index=index, minsize=minsize_column, weight=weight)
+            window.columnconfigure(
+                index=index, minsize=minsize_column, weight=weight,
+            )

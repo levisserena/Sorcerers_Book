@@ -17,12 +17,13 @@ class CRUDPayload(CRUDBase):
     ) -> None:
         """
         Параметры:
-            name_db: название Базы данных;
-            name_table: название таблицы в БД;
-            connector: менеджер подключения к БД.
-            field_slug: поле slug у таблицы, заменит короткое название.
-            field_description: поле description у таблицы, для подробного описания.
-            field_password: поле password у таблицы, для хранения пароля.
+        - name_db: название Базы данных;
+        - name_table: название таблицы в БД;
+        - connector: менеджер подключения к БД.
+        - field_slug: поле slug у таблицы, заменит короткое название.
+        - field_description: поле description у таблицы, для подробного
+          описания.
+        - field_password: поле password у таблицы, для хранения пароля.
         """
         super().__init__(name_db, name_table, connector)
         self.field_slug = field_slug
@@ -41,7 +42,12 @@ class CRUDPayload(CRUDBase):
             )
             """)
 
-    def create_entry(self, slug: str, password: str, description: str = '') -> None:
+    def create_entry(
+        self,
+        slug: str,
+        password: str,
+        description: str = ''
+    ) -> None:
         """
         Создаст новую запись в БД.
 
@@ -53,7 +59,9 @@ class CRUDPayload(CRUDBase):
             cursor.execute(
                 f"""
                 INSERT INTO {self.name_table}
-                ({self.field_slug}, {self.field_description}, {self.field_password})
+                ({self.field_slug},
+                {self.field_description},
+                {self.field_password})
                 VALUES (?, ?, ?)
                 """,
                 (slug, description, password),
@@ -68,19 +76,33 @@ class CRUDPayload(CRUDBase):
         with self.connector(self.name_db) as cursor:
             pre_result = cursor.execute(
                 f"""
-                SELECT id, {self.field_slug}, {self.field_description}, {self.field_password}
+                SELECT id,
+                {self.field_slug},
+                {self.field_description},
+                {self.field_password}
                 FROM {self.name_table}
                 WHERE {self.field_slug} = ?
                 """,
                 (slug,),
             ).fetchone()
             result = None if not pre_result else dict(zip(
-                ('id', self.field_slug, self.field_description, self.field_password),
+                (
+                    'id',
+                    self.field_slug,
+                    self.field_description,
+                    self.field_password,
+                ),
                 pre_result,
             ))
             return result
 
-    def update_entry(self, id: str, slug: str, password: str, description: str = '') -> None:
+    def update_entry(
+        self,
+        id: str,
+        slug: str,
+        password: str,
+        description: str = '',
+    ) -> None:
         """
         Изменит запись в БД.
 
@@ -93,10 +115,35 @@ class CRUDPayload(CRUDBase):
             cursor.execute(
                 f"""
                 UPDATE {self.name_table}
-                SET {self.field_slug} = ?, {self.field_description} = ?, {self.field_password} = ?
+                SET {self.field_slug} = ?,
+                {self.field_description} = ?,
+                {self.field_password} = ?
                 WHERE id = ?
                 """,
                 (slug, description, password, id)
+            )
+
+    def get_all_slag(self) -> list[str]:
+        """Вернет отсортированный список слагов всех записей в БД."""
+        with self.connector(self.name_db) as cursor:
+            list_slag = cursor.execute(
+                f"""
+                SELECT {self.field_slug}
+                FROM {self.name_table}
+                ORDER BY {self.field_slug}
+                """,
+            ).fetchall()
+        return list_slag
+
+    def delete_by_slug(self, slug: str) -> None:
+        """Удалит запись из БД по переданному слагу."""
+        with self.connector(self.name_db) as cursor:
+            cursor.execute(
+                f"""
+                DELETE FROM {self.name_table}
+                WHERE {self.field_slug} = ?
+                """,
+                (slug,),
             )
 
 
